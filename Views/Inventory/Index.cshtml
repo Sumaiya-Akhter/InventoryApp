@@ -1,0 +1,28 @@
+@model List<InventoryApp.Models.Inventory>
+
+@{
+    ViewData["Title"] = "Inventories";
+}
+
+<h1>Inventories</h1>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Create New</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var inv in Model)
+        {
+            <tr>
+                <td>@inv.Title</td>
+                <td>@inv.Description</td>
+                <td>@inv.CreatedAt</td>
+            </tr>
+        }
+    </tbody>
+</table>

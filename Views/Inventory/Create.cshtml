@@ -1,0 +1,20 @@
+@model InventoryApp.Models.Inventory
+
+@{
+    ViewData["Title"] = "Create Inventory";
+}
+
+<h1>Create Inventory</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
