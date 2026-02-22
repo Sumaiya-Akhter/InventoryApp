@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace InventoryApp.Models;
 
 public class Inventory
@@ -6,4 +8,6 @@ public class Inventory
     public string Title { get; set; } = "";
     public string Description { get; set; } = "";
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public string CreatorId { get; set; } = "";
+    public IdentityUser? Creator { get; set; }
 }
