@@ -12,46 +12,55 @@
 <hr />
 
 <h3>Items</h3>
-@if (User.Identity!.IsAuthenticated)
-{
-    <a asp-action="AddItem" asp-route-inventoryId="@Model.Id" class="btn btn-primary mb-3">Add Item</a>
-}
+
+<div class="d-flex gap-2 mb-3">
+    @if (User.Identity!.IsAuthenticated)
+    {
+        <a asp-action="AddItem" asp-route-inventoryId="@Model.Id" class="btn btn-primary">Add Item</a>
+        <button type="submit" form="itemsForm" class="btn btn-danger">Delete Selected</button>
+    }
+</div>
 
 @if (Model.Items != null && Model.Items.Any())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                @if (Model.String1Name != null) { <th>@Model.String1Name</th> }
-                @if (Model.String2Name != null) { <th>@Model.String2Name</th> }
-                @if (Model.String3Name != null) { <th>@Model.String3Name</th> }
-                @if (Model.Int1Name != null) { <th>@Model.Int1Name</th> }
-                @if (Model.Int2Name != null) { <th>@Model.Int2Name</th> }
-                @if (Model.Int3Name != null) { <th>@Model.Int3Name</th> }
-                @if (Model.Bool1Name != null) { <th>@Model.Bool1Name</th> }
-                @if (Model.Bool2Name != null) { <th>@Model.Bool2Name</th> }
-                @if (Model.Bool3Name != null) { <th>@Model.Bool3Name</th> }
-                <th>Created At</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Items)
-            {
+    <form id="itemsForm" asp-action="DeleteItems" method="post">
+        <input type="hidden" name="inventoryId" value="@Model.Id" />
+        <table class="table">
+            <thead>
                 <tr>
-                    @if (Model.String1Name != null) { <td>@item.String1</td> }
-                    @if (Model.String2Name != null) { <td>@item.String2</td> }
-                    @if (Model.String3Name != null) { <td>@item.String3</td> }
-                    @if (Model.Int1Name != null) { <td>@item.Int1</td> }
-                    @if (Model.Int2Name != null) { <td>@item.Int2</td> }
-                    @if (Model.Int3Name != null) { <td>@item.Int3</td> }
-                    @if (Model.Bool1Name != null) { <td>@item.Bool1</td> }
-                    @if (Model.Bool2Name != null) { <td>@item.Bool2</td> }
-                    @if (Model.Bool3Name != null) { <td>@item.Bool3</td> }
-                    <td>@item.CreatedAt.ToShortDateString()</td>
+                    <th></th>
+                    @if (Model.String1Name != null) { <th>@Model.String1Name</th> }
+                    @if (Model.String2Name != null) { <th>@Model.String2Name</th> }
+                    @if (Model.String3Name != null) { <th>@Model.String3Name</th> }
+                    @if (Model.Int1Name != null) { <th>@Model.Int1Name</th> }
+                    @if (Model.Int2Name != null) { <th>@Model.Int2Name</th> }
+                    @if (Model.Int3Name != null) { <th>@Model.Int3Name</th> }
+                    @if (Model.Bool1Name != null) { <th>@Model.Bool1Name</th> }
+                    @if (Model.Bool2Name != null) { <th>@Model.Bool2Name</th> }
+                    @if (Model.Bool3Name != null) { <th>@Model.Bool3Name</th> }
+                    <th>Created At</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td><input type="checkbox" name="selectedIds" value="@item.Id" /></td>
+                        @if (Model.String1Name != null) { <td>@item.String1</td> }
+                        @if (Model.String2Name != null) { <td>@item.String2</td> }
+                        @if (Model.String3Name != null) { <td>@item.String3</td> }
+                        @if (Model.Int1Name != null) { <td>@item.Int1</td> }
+                        @if (Model.Int2Name != null) { <td>@item.Int2</td> }
+                        @if (Model.Int3Name != null) { <td>@item.Int3</td> }
+                        @if (Model.Bool1Name != null) { <td>@item.Bool1</td> }
+                        @if (Model.Bool2Name != null) { <td>@item.Bool2</td> }
+                        @if (Model.Bool3Name != null) { <td>@item.Bool3</td> }
+                        <td>@item.CreatedAt.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
 }
 else
 {

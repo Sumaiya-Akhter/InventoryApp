@@ -72,4 +72,15 @@ public class InventoryController : Controller
         await _db.SaveChangesAsync();
         return RedirectToAction("Details", new { id = item.InventoryId });
     }
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> DeleteItems(int inventoryId, int[] selectedIds)
+    {
+        var items = await _db.Items
+            .Where(i => selectedIds.Contains(i.Id) && i.InventoryId == inventoryId)
+            .ToListAsync();
+        _db.Items.RemoveRange(items);
+        await _db.SaveChangesAsync();
+        return RedirectToAction("Details", new { id = inventoryId });
+    }
 }
