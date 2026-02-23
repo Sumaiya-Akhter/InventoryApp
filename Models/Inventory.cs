@@ -10,4 +10,5 @@ public class Inventory
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public string CreatorId { get; set; } = "";
     public IdentityUser? Creator { get; set; }
+    public List<Item> Items { get; set; } = new();
 }

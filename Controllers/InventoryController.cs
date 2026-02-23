@@ -45,9 +45,29 @@ public class InventoryController : Controller
     {
         var inventory = await _db.Inventories
             .Include(i => i.Creator)
+            .Include(i => i.Items)
             .FirstOrDefaultAsync(i => i.Id == id);
-        if (inventory == null) 
+
+        if (inventory == null)
             return NotFound();
+
         return View(inventory);
+    }
+    [Authorize]
+    public IActionResult AddItem(int inventoryId)
+    {
+        var item = new Item { InventoryId = inventoryId };
+        return View(item);
+    }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> AddItem(Item item)
+    {
+        item.CreatorId = _userManager.GetUserId(User)!;
+        item.CreatedAt = DateTime.UtcNow;
+        _db.Items.Add(item);
+        await _db.SaveChangesAsync();
+        return RedirectToAction("Details", new { id = item.InventoryId });
     }
 }

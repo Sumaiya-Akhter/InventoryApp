@@ -1,0 +1,21 @@
+@model InventoryApp.Models.Item
+
+@{
+    ViewData["Title"] = "Add Item";
+}
+
+<h1>Add Item</h1>
+
+<form method="post">
+    <input type="hidden" asp-for="InventoryId" />
+    <div class="mb-3">
+        <label class="form-label">Field 1</label>
+        <input asp-for="String1" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Field 2</label>
+        <input asp-for="String2" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Add Item</button>
+    <a asp-action="Details" asp-route-id="@Model.InventoryId" class="btn btn-secondary">Cancel</a>
+</form>

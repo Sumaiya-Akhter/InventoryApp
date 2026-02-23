@@ -12,6 +12,36 @@
 <hr />
 
 <h3>Items</h3>
-<p>No items yet.</p>
+@if (User.Identity!.IsAuthenticated)
+{
+    <a asp-action="AddItem" asp-route-inventoryId="@Model.Id" class="btn btn-primary mb-3">Add Item</a>
+}
+
+@if (Model.Items != null && Model.Items.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Field 1</th>
+                <th>Field 2</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.String1</td>
+                    <td>@item.String2</td>
+                    <td>@item.CreatedAt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No items yet.</p>
+}
 
 <a asp-action="Index" class="btn btn-secondary">Back to Inventories</a>
