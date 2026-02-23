@@ -41,4 +41,13 @@ public class InventoryController : Controller
         await _db.SaveChangesAsync();
         return RedirectToAction("Index");
     }
+    public async Task<IActionResult> Details(int id)
+    {
+        var inventory = await _db.Inventories
+            .Include(i => i.Creator)
+            .FirstOrDefaultAsync(i => i.Id == id);
+        if (inventory == null) 
+            return NotFound();
+        return View(inventory);
+    }
 }

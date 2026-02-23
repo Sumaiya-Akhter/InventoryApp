@@ -1,0 +1,17 @@
+@model InventoryApp.Models.Inventory
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h1>@Model.Title</h1>
+<p>@Model.Description</p>
+<p><strong>Creator:</strong> @Model.Creator?.Email</p>
+<p><strong>Created:</strong> @Model.CreatedAt.ToShortDateString()</p>
+
+<hr />
+
+<h3>Items</h3>
+<p>No items yet.</p>
+
+<a asp-action="Index" class="btn btn-secondary">Back to Inventories</a>

@@ -24,7 +24,9 @@
         @foreach (var inv in Model)
         {
             <tr>
-                <td>@inv.Title</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@inv.Id">@inv.Title</a>
+                </td>
                 <td>@inv.Description</td>
                 <td>@inv.Creator?.Email</td>
                 <td>@inv.CreatedAt.ToShortDateString()</td>
