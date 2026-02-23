@@ -54,10 +54,12 @@ public class InventoryController : Controller
         return View(inventory);
     }
     [Authorize]
-    public IActionResult AddItem(int inventoryId)
+    public async Task<IActionResult> AddItem(int inventoryId)
     {
-        var item = new Item { InventoryId = inventoryId };
-        return View(item);
+        var inventory = await _db.Inventories.FindAsync(inventoryId);
+        if (inventory == null) return NotFound();
+        ViewBag.Inventory = inventory;
+        return View(new Item { InventoryId = inventoryId });
     }
 
     [Authorize]

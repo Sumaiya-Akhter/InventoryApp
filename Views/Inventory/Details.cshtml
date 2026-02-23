@@ -22,8 +22,15 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Field 1</th>
-                <th>Field 2</th>
+                @if (Model.String1Name != null) { <th>@Model.String1Name</th> }
+                @if (Model.String2Name != null) { <th>@Model.String2Name</th> }
+                @if (Model.String3Name != null) { <th>@Model.String3Name</th> }
+                @if (Model.Int1Name != null) { <th>@Model.Int1Name</th> }
+                @if (Model.Int2Name != null) { <th>@Model.Int2Name</th> }
+                @if (Model.Int3Name != null) { <th>@Model.Int3Name</th> }
+                @if (Model.Bool1Name != null) { <th>@Model.Bool1Name</th> }
+                @if (Model.Bool2Name != null) { <th>@Model.Bool2Name</th> }
+                @if (Model.Bool3Name != null) { <th>@Model.Bool3Name</th> }
                 <th>Created At</th>
             </tr>
         </thead>
@@ -31,8 +38,15 @@
             @foreach (var item in Model.Items)
             {
                 <tr>
-                    <td>@item.String1</td>
-                    <td>@item.String2</td>
+                    @if (Model.String1Name != null) { <td>@item.String1</td> }
+                    @if (Model.String2Name != null) { <td>@item.String2</td> }
+                    @if (Model.String3Name != null) { <td>@item.String3</td> }
+                    @if (Model.Int1Name != null) { <td>@item.Int1</td> }
+                    @if (Model.Int2Name != null) { <td>@item.Int2</td> }
+                    @if (Model.Int3Name != null) { <td>@item.Int3</td> }
+                    @if (Model.Bool1Name != null) { <td>@item.Bool1</td> }
+                    @if (Model.Bool2Name != null) { <td>@item.Bool2</td> }
+                    @if (Model.Bool3Name != null) { <td>@item.Bool3</td> }
                     <td>@item.CreatedAt.ToShortDateString()</td>
                 </tr>
             }

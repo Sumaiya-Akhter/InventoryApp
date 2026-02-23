@@ -2,20 +2,78 @@
 
 @{
     ViewData["Title"] = "Add Item";
+    var inventory = ViewBag.Inventory as InventoryApp.Models.Inventory;
 }
 
-<h1>Add Item</h1>
+<h1>Add Item to @inventory?.Title</h1>
 
 <form method="post">
     <input type="hidden" asp-for="InventoryId" />
-    <div class="mb-3">
-        <label class="form-label">Field 1</label>
-        <input asp-for="String1" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Field 2</label>
-        <input asp-for="String2" class="form-control" />
-    </div>
+
+    @if (inventory?.String1Name != null)
+    {
+        <div class="mb-3">
+            <label class="form-label">@inventory.String1Name</label>
+            <input asp-for="String1" class="form-control" />
+        </div>
+    }
+    @if (inventory?.String2Name != null)
+    {
+        <div class="mb-3">
+            <label class="form-label">@inventory.String2Name</label>
+            <input asp-for="String2" class="form-control" />
+        </div>
+    }
+    @if (inventory?.String3Name != null)
+    {
+        <div class="mb-3">
+            <label class="form-label">@inventory.String3Name</label>
+            <input asp-for="String3" class="form-control" />
+        </div>
+    }
+    @if (inventory?.Int1Name != null)
+    {
+        <div class="mb-3">
+            <label class="form-label">@inventory.Int1Name</label>
+            <input asp-for="Int1" class="form-control" type="number" />
+        </div>
+    }
+    @if (inventory?.Int2Name != null)
+    {
+        <div class="mb-3">
+            <label class="form-label">@inventory.Int2Name</label>
+            <input asp-for="Int2" class="form-control" type="number" />
+        </div>
+    }
+    @if (inventory?.Int3Name != null)
+    {
+        <div class="mb-3">
+            <label class="form-label">@inventory.Int3Name</label>
+            <input asp-for="Int3" class="form-control" type="number" />
+        </div>
+    }
+    @if (inventory?.Bool1Name != null)
+    {
+        <div class="mb-3 form-check">
+            <input asp-for="Bool1" class="form-check-input" type="checkbox" />
+            <label class="form-check-label">@inventory.Bool1Name</label>
+        </div>
+    }
+    @if (inventory?.Bool2Name != null)
+    {
+        <div class="mb-3 form-check">
+            <input asp-for="Bool2" class="form-check-input" type="checkbox" />
+            <label class="form-check-label">@inventory.Bool2Name</label>
+        </div>
+    }
+    @if (inventory?.Bool3Name != null)
+    {
+        <div class="mb-3 form-check">
+            <input asp-for="Bool3" class="form-check-input" type="checkbox" />
+            <label class="form-check-label">@inventory.Bool3Name</label>
+        </div>
+    }
+
     <button type="submit" class="btn btn-primary">Add Item</button>
     <a asp-action="Details" asp-route-id="@Model.InventoryId" class="btn btn-secondary">Cancel</a>
 </form>

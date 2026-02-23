@@ -3,6 +3,7 @@ using System;
 using InventoryApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace InventoryApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260223140247_AddFieldNames")]
+    partial class AddFieldNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,13 +90,13 @@ namespace InventoryApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Bool1")
+                    b.Property<bool?>("Bool1")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("Bool2")
+                    b.Property<bool?>("Bool2")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("Bool3")
+                    b.Property<bool?>("Bool3")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("CreatedAt")

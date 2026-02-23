@@ -11,4 +11,13 @@ public class Inventory
     public string CreatorId { get; set; } = "";
     public IdentityUser? Creator { get; set; }
     public List<Item> Items { get; set; } = new();
+    public string? String1Name { get; set; }
+    public string? String2Name { get; set; }
+    public string? String3Name { get; set; }
+    public string? Int1Name { get; set; }
+    public string? Int2Name { get; set; }
+    public string? Int3Name { get; set; }
+    public string? Bool1Name { get; set; }
+    public string? Bool2Name { get; set; }
+    public string? Bool3Name { get; set; }
 }

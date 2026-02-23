@@ -7,6 +7,7 @@
 <h1>Create Inventory</h1>
 
 <form method="post">
+    <h4>Basic Info</h4>
     <div class="mb-3">
         <label class="form-label">Title</label>
         <input asp-for="Title" class="form-control" />
@@ -15,6 +16,55 @@
         <label class="form-label">Description</label>
         <textarea asp-for="Description" class="form-control"></textarea>
     </div>
+
+    <hr />
+    <h4>Define Custom Fields (leave blank to hide)</h4>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Text Field 1 Name</label>
+            <input asp-for="String1Name" class="form-control" placeholder="e.g. Model" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Text Field 2 Name</label>
+            <input asp-for="String2Name" class="form-control" placeholder="e.g. Brand" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Text Field 3 Name</label>
+            <input asp-for="String3Name" class="form-control" placeholder="e.g. Color" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Number Field 1 Name</label>
+            <input asp-for="Int1Name" class="form-control" placeholder="e.g. Price" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Number Field 2 Name</label>
+            <input asp-for="Int2Name" class="form-control" placeholder="e.g. Year" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Number Field 3 Name</label>
+            <input asp-for="Int3Name" class="form-control" placeholder="e.g. Quantity" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Checkbox Field 1 Name</label>
+            <input asp-for="Bool1Name" class="form-control" placeholder="e.g. In Stock" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Checkbox Field 2 Name</label>
+            <input asp-for="Bool2Name" class="form-control" placeholder="e.g. Verified" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Checkbox Field 3 Name</label>
+            <input asp-for="Bool3Name" class="form-control" placeholder="e.g. Active" />
+        </div>
+    </div>
+
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>
