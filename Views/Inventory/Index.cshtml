@@ -6,12 +6,17 @@
 
 <h1>Inventories</h1>
 
-<a asp-action="Create" class="btn btn-primary mb-3">Create New</a>
+@if (User.Identity!.IsAuthenticated)
+{
+    <a asp-action="Create" class="btn btn-primary mb-3">Create New</a>
+}
+
 <table class="table">
     <thead>
         <tr>
             <th>Title</th>
             <th>Description</th>
+            <th>Creator</th>
             <th>Created At</th>
         </tr>
     </thead>
@@ -21,7 +26,8 @@
             <tr>
                 <td>@inv.Title</td>
                 <td>@inv.Description</td>
-                <td>@inv.CreatedAt</td>
+                <td>@inv.Creator?.Email</td>
+                <td>@inv.CreatedAt.ToShortDateString()</td>
             </tr>
         }
     </tbody>

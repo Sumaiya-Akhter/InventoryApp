@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using InventoryApp.Models;
 
 namespace InventoryApp.Controllers;
@@ -18,13 +19,18 @@ public class InventoryController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var inventories = await _db.Inventories.ToListAsync();
+        var inventories = await _db.Inventories
+            .Include(i => i.Creator)
+            .ToListAsync();
         return View(inventories);
     }
+    [Authorize]
     public IActionResult Create()
     {
         return View();
     }
+
+    [Authorize]
 
     [HttpPost]
     public async Task<IActionResult> Create(Inventory inventory)
