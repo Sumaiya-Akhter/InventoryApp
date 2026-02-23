@@ -132,4 +132,17 @@ public async Task<IActionResult> DeleteInventory(int id)
     await _db.SaveChangesAsync();
     return RedirectToAction("Index");
 }
+public async Task<IActionResult> Search(string q)
+{
+    ViewBag.Query = q;
+    if (string.IsNullOrWhiteSpace(q))
+        return View(new List<Inventory>());
+
+    var results = await _db.Inventories
+        .Include(i => i.Creator)
+        .Where(i => i.Title.Contains(q) || i.Description.Contains(q))
+        .ToListAsync();
+
+    return View(results);
+}
 }
