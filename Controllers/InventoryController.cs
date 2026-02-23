@@ -119,4 +119,17 @@ public async Task<IActionResult> Edit(Inventory inventory)
     await _db.SaveChangesAsync();
     return RedirectToAction("Details", new { id = inventory.Id });
 }
+[Authorize]
+[HttpPost]
+public async Task<IActionResult> DeleteInventory(int id)
+{
+    var inventory = await _db.Inventories.FindAsync(id);
+    if (inventory == null) return NotFound();
+    if (inventory.CreatorId != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+        return Forbid();
+
+    _db.Inventories.Remove(inventory);
+    await _db.SaveChangesAsync();
+    return RedirectToAction("Index");
+}
 }

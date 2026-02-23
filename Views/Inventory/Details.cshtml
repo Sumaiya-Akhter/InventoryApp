@@ -5,8 +5,6 @@
 }
 
 <h1>@Model.Title</h1>
-<p>CreatorId: @Model.CreatorId</p>
-<p>CurrentUserId: @ViewBag.CurrentUserId</p>
 <p>@Model.Description</p>
 <p><strong>Creator:</strong> @Model.Creator?.Email</p>
 <p><strong>Created:</strong> @Model.CreatedAt.ToShortDateString()</p>
@@ -24,6 +22,14 @@
         }
         <a asp-action="AddItem" asp-route-inventoryId="@Model.Id" class="btn btn-primary">Add Item</a>
         <button type="submit" form="itemsForm" class="btn btn-danger">Delete Selected</button>
+        @if (Model.CreatorId == ViewBag.CurrentUserId)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit Inventory</a>
+            <form method="post" asp-action="DeleteInventory" style="display:inline">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete Inventory</button>
+            </form>
+        }
     }
 </div>
 
