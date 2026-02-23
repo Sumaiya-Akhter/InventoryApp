@@ -1,0 +1,47 @@
+@model List<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewData["Title"] = "Admin Panel";
+    var userRoles = ViewBag.UserRoles as Dictionary<string, bool>;
+}
+
+<h1>Admin Panel</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Blocked</th>
+            <th>Admin</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@(user.LockoutEnd > DateTime.UtcNow ? "Yes" : "No")</td>
+                <td>@(userRoles![user.Id] ? "Yes" : "No")</td>
+                <td class="d-flex gap-2">
+                    <form method="post" asp-action="ToggleAdmin">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <button class="btn btn-sm btn-warning">
+                            @(userRoles![user.Id] ? "Remove Admin" : "Make Admin")
+                        </button>
+                    </form>
+                    <form method="post" asp-action="ToggleBlock">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <button class="btn btn-sm btn-secondary">
+                            @(user.LockoutEnd > DateTime.UtcNow ? "Unblock" : "Block")
+                        </button>
+                    </form>
+                    <form method="post" asp-action="DeleteUser">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this user?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
