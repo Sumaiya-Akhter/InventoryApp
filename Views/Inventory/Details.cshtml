@@ -5,6 +5,8 @@
 }
 
 <h1>@Model.Title</h1>
+<p>CreatorId: @Model.CreatorId</p>
+<p>CurrentUserId: @ViewBag.CurrentUserId</p>
 <p>@Model.Description</p>
 <p><strong>Creator:</strong> @Model.Creator?.Email</p>
 <p><strong>Created:</strong> @Model.CreatedAt.ToShortDateString()</p>
@@ -16,6 +18,10 @@
 <div class="d-flex gap-2 mb-3">
     @if (User.Identity!.IsAuthenticated)
     {
+        @if (Model.CreatorId == ViewBag.CurrentUserId)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit Inventory</a>
+        }
         <a asp-action="AddItem" asp-route-inventoryId="@Model.Id" class="btn btn-primary">Add Item</a>
         <button type="submit" form="itemsForm" class="btn btn-danger">Delete Selected</button>
     }

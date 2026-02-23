@@ -51,6 +51,8 @@ public class InventoryController : Controller
         if (inventory == null)
             return NotFound();
 
+        var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        ViewBag.CurrentUserId = currentUserId;
         return View(inventory);
     }
     [Authorize]
@@ -83,4 +85,38 @@ public class InventoryController : Controller
         await _db.SaveChangesAsync();
         return RedirectToAction("Details", new { id = inventoryId });
     }
+    [Authorize]
+public async Task<IActionResult> Edit(int id)
+{
+    var inventory = await _db.Inventories.FindAsync(id);
+    if (inventory == null) return NotFound();
+    if (inventory.CreatorId != _userManager.GetUserId(User))
+        return Forbid();
+    return View(inventory);
+}
+
+[Authorize]
+[HttpPost]
+public async Task<IActionResult> Edit(Inventory inventory)
+{
+    var existing = await _db.Inventories.FindAsync(inventory.Id);
+    if (existing == null) return NotFound();
+    if (existing.CreatorId != _userManager.GetUserId(User))
+        return Forbid();
+
+    existing.Title = inventory.Title;
+    existing.Description = inventory.Description;
+    existing.String1Name = inventory.String1Name;
+    existing.String2Name = inventory.String2Name;
+    existing.String3Name = inventory.String3Name;
+    existing.Int1Name = inventory.Int1Name;
+    existing.Int2Name = inventory.Int2Name;
+    existing.Int3Name = inventory.Int3Name;
+    existing.Bool1Name = inventory.Bool1Name;
+    existing.Bool2Name = inventory.Bool2Name;
+    existing.Bool3Name = inventory.Bool3Name;
+
+    await _db.SaveChangesAsync();
+    return RedirectToAction("Details", new { id = inventory.Id });
+}
 }
