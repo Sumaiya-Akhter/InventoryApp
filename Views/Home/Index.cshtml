@@ -1,8 +1,49 @@
 ﻿@{
-    ViewData["Title"] = "Inventory App";
+    ViewData["Title"] = "Home";
+    var latest = ViewBag.Latest as List<InventoryApp.Models.Inventory>;
+    var popular = ViewBag.Popular as List<InventoryApp.Models.Inventory>;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to Inventory App</h1>
-    <p>Your inventory management system.</p>
-</div>
+<h2>Latest Inventories</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Creator</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var inv in latest!)
+        {
+            <tr>
+                <td><a asp-controller="Inventory" asp-action="Details" asp-route-id="@inv.Id">@inv.Title</a></td>
+                <td>@inv.Description</td>
+                <td>@inv.Creator?.Email</td>
+                <td>@inv.CreatedAt.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2 class="mt-4">Most Popular Inventories</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Creator</th>
+            <th>Items</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var inv in popular!)
+        {
+            <tr>
+                <td><a asp-controller="Inventory" asp-action="Details" asp-route-id="@inv.Id">@inv.Title</a></td>
+                <td>@inv.Creator?.Email</td>
+                <td>@inv.Items.Count</td>
+            </tr>
+        }
+    </tbody>
+</table>
