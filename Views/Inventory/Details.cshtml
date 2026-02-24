@@ -8,6 +8,12 @@
 <p>@Model.Description</p>
 <p><strong>Creator:</strong> @Model.Creator?.Email</p>
 <p><strong>Created:</strong> @Model.CreatedAt.ToShortDateString()</p>
+<p><strong>Tags:</strong> 
+    @foreach (var tag in Model.Tags)
+    {
+        <a asp-controller="Inventory" asp-action="Search" asp-route-q="@tag.Name" class="badge bg-secondary text-decoration-none">@tag.Name</a>
+    }
+</p>
 
 <hr />
 

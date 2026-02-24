@@ -12,6 +12,7 @@ public class Inventory
     public IdentityUser? Creator { get; set; }
     public List<Item> Items { get; set; } = new();
     public List<Comment> Comments { get; set; } = new();
+    public List<Tag> Tags { get; set; } = new();
     public string? String1Name { get; set; }
     public string? String2Name { get; set; }
     public string? String3Name { get; set; }

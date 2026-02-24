@@ -33,10 +33,22 @@ public class InventoryController : Controller
     [Authorize]
 
     [HttpPost]
-    public async Task<IActionResult> Create(Inventory inventory)
+    public async Task<IActionResult> Create(Inventory inventory, string tags)
     {
         inventory.CreatorId = _userManager.GetUserId(User)!;
         inventory.CreatedAt = DateTime.UtcNow;
+
+        if (!string.IsNullOrWhiteSpace(tags))
+        {
+            var tagNames = tags.Split(',').Select(t => t.Trim()).Where(t => t != "");
+            foreach (var tagName in tagNames)
+            {
+                var tag = await _db.Tags.FirstOrDefaultAsync(t => t.Name == tagName)
+                        ?? new Tag { Name = tagName };
+                inventory.Tags.Add(tag);
+            }
+        }
+
         _db.Inventories.Add(inventory);
         await _db.SaveChangesAsync();
         return RedirectToAction("Index");
@@ -49,6 +61,7 @@ public class InventoryController : Controller
                 .ThenInclude(item => item.Likes)
             .Include(i => i.Comments)
                 .ThenInclude(c => c.Creator)
+            .Include(i => i.Tags)
             .FirstOrDefaultAsync(i => i.Id == id);
 
         if (inventory == null)
