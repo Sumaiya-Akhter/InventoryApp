@@ -46,6 +46,8 @@ public class InventoryController : Controller
         var inventory = await _db.Inventories
             .Include(i => i.Creator)
             .Include(i => i.Items)
+            .Include(i => i.Comments)
+                .ThenInclude(c => c.Creator)
             .FirstOrDefaultAsync(i => i.Id == id);
 
         if (inventory == null)
@@ -155,5 +157,20 @@ public async Task<IActionResult> MyInventories()
         .OrderByDescending(i => i.CreatedAt)
         .ToListAsync();
     return View(inventories);
+}
+[Authorize]
+[HttpPost]
+public async Task<IActionResult> AddComment(int inventoryId, string content)
+{
+    var comment = new Comment
+    {
+        InventoryId = inventoryId,
+        Content = content,
+        CreatorId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!,
+        CreatedAt = DateTime.UtcNow
+    };
+    _db.Comments.Add(comment);
+    await _db.SaveChangesAsync();
+    return RedirectToAction("Details", new { id = inventoryId });
 }
 }
