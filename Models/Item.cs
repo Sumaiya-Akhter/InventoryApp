@@ -21,4 +21,6 @@ public class Item
     public bool Bool1 { get; set; }
     public bool Bool2 { get; set; }
     public bool Bool3 { get; set; }
+
+    public List<Like> Likes { get; set; } = new();
 }

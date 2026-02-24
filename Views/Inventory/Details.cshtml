@@ -19,65 +19,84 @@
         @if (Model.CreatorId == ViewBag.CurrentUserId)
         {
             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit Inventory</a>
-        }
-        <a asp-action="AddItem" asp-route-inventoryId="@Model.Id" class="btn btn-primary">Add Item</a>
-        <button type="submit" form="itemsForm" class="btn btn-danger">Delete Selected</button>
-        @if (Model.CreatorId == ViewBag.CurrentUserId)
-        {
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit Inventory</a>
             <form method="post" asp-action="DeleteInventory" style="display:inline">
                 <input type="hidden" name="id" value="@Model.Id" />
                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete Inventory</button>
             </form>
         }
+        <a asp-action="AddItem" asp-route-inventoryId="@Model.Id" class="btn btn-primary">Add Item</a>
+        <button type="submit" form="itemsForm" class="btn btn-danger">Delete Selected</button>
     }
 </div>
 
+<form id="itemsForm" asp-action="DeleteItems" method="post">
+    <input type="hidden" name="inventoryId" value="@Model.Id" />
+</form>
+
 @if (Model.Items != null && Model.Items.Any())
 {
-    <form id="itemsForm" asp-action="DeleteItems" method="post">
-        <input type="hidden" name="inventoryId" value="@Model.Id" />
-        <table class="table">
-            <thead>
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                @if (Model.String1Name != null) { <th>@Model.String1Name</th> }
+                @if (Model.String2Name != null) { <th>@Model.String2Name</th> }
+                @if (Model.String3Name != null) { <th>@Model.String3Name</th> }
+                @if (Model.Int1Name != null) { <th>@Model.Int1Name</th> }
+                @if (Model.Int2Name != null) { <th>@Model.Int2Name</th> }
+                @if (Model.Int3Name != null) { <th>@Model.Int3Name</th> }
+                @if (Model.Bool1Name != null) { <th>@Model.Bool1Name</th> }
+                @if (Model.Bool2Name != null) { <th>@Model.Bool2Name</th> }
+                @if (Model.Bool3Name != null) { <th>@Model.Bool3Name</th> }
+                <th>Likes</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
                 <tr>
-                    <th></th>
-                    @if (Model.String1Name != null) { <th>@Model.String1Name</th> }
-                    @if (Model.String2Name != null) { <th>@Model.String2Name</th> }
-                    @if (Model.String3Name != null) { <th>@Model.String3Name</th> }
-                    @if (Model.Int1Name != null) { <th>@Model.Int1Name</th> }
-                    @if (Model.Int2Name != null) { <th>@Model.Int2Name</th> }
-                    @if (Model.Int3Name != null) { <th>@Model.Int3Name</th> }
-                    @if (Model.Bool1Name != null) { <th>@Model.Bool1Name</th> }
-                    @if (Model.Bool2Name != null) { <th>@Model.Bool2Name</th> }
-                    @if (Model.Bool3Name != null) { <th>@Model.Bool3Name</th> }
-                    <th>Created At</th>
+                    <td>
+                        <input type="checkbox" name="selectedIds" value="@item.Id" form="itemsForm" />
+                    </td>
+                    @if (Model.String1Name != null) { <td>@item.String1</td> }
+                    @if (Model.String2Name != null) { <td>@item.String2</td> }
+                    @if (Model.String3Name != null) { <td>@item.String3</td> }
+                    @if (Model.Int1Name != null) { <td>@item.Int1</td> }
+                    @if (Model.Int2Name != null) { <td>@item.Int2</td> }
+                    @if (Model.Int3Name != null) { <td>@item.Int3</td> }
+                    @if (Model.Bool1Name != null) { <td>@item.Bool1</td> }
+                    @if (Model.Bool2Name != null) { <td>@item.Bool2</td> }
+                    @if (Model.Bool3Name != null) { <td>@item.Bool3</td> }
+                    <td>
+                        @item.Likes.Count
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <form method="post" asp-action="ToggleLike" style="display:inline">
+                                <input type="hidden" name="itemId" value="@item.Id" />
+                                <input type="hidden" name="inventoryId" value="@Model.Id" />
+                                @if (item.Likes.Any(l => l.UserId == (string)ViewBag.CurrentUserId))
+                                {
+                                    <button class="btn btn-sm btn-danger">Unlike</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm btn-outline-danger">Like</button>
+                                }
+                            </form>
+                        }
+                    </td>
+                    <td>@item.CreatedAt.ToShortDateString()</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Items)
-                {
-                    <tr>
-                        <td><input type="checkbox" name="selectedIds" value="@item.Id" /></td>
-                        @if (Model.String1Name != null) { <td>@item.String1</td> }
-                        @if (Model.String2Name != null) { <td>@item.String2</td> }
-                        @if (Model.String3Name != null) { <td>@item.String3</td> }
-                        @if (Model.Int1Name != null) { <td>@item.Int1</td> }
-                        @if (Model.Int2Name != null) { <td>@item.Int2</td> }
-                        @if (Model.Int3Name != null) { <td>@item.Int3</td> }
-                        @if (Model.Bool1Name != null) { <td>@item.Bool1</td> }
-                        @if (Model.Bool2Name != null) { <td>@item.Bool2</td> }
-                        @if (Model.Bool3Name != null) { <td>@item.Bool3</td> }
-                        <td>@item.CreatedAt.ToShortDateString()</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </form>
+            }
+        </tbody>
+    </table>
 }
 else
 {
     <p>No items yet.</p>
 }
+
 <hr />
 <h3>Discussion</h3>
 

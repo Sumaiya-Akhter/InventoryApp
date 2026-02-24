@@ -46,6 +46,7 @@ public class InventoryController : Controller
         var inventory = await _db.Inventories
             .Include(i => i.Creator)
             .Include(i => i.Items)
+                .ThenInclude(item => item.Likes)
             .Include(i => i.Comments)
                 .ThenInclude(c => c.Creator)
             .FirstOrDefaultAsync(i => i.Id == id);
@@ -170,6 +171,22 @@ public async Task<IActionResult> AddComment(int inventoryId, string content)
         CreatedAt = DateTime.UtcNow
     };
     _db.Comments.Add(comment);
+    await _db.SaveChangesAsync();
+    return RedirectToAction("Details", new { id = inventoryId });
+}
+[Authorize]
+[HttpPost]
+public async Task<IActionResult> ToggleLike(int itemId, int inventoryId)
+{
+    var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!;
+    var existing = await _db.Likes
+        .FirstOrDefaultAsync(l => l.ItemId == itemId && l.UserId == userId);
+
+    if (existing == null)
+        _db.Likes.Add(new Like { ItemId = itemId, UserId = userId });
+    else
+        _db.Likes.Remove(existing);
+
     await _db.SaveChangesAsync();
     return RedirectToAction("Details", new { id = inventoryId });
 }
