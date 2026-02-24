@@ -1,0 +1,38 @@
+@model List<InventoryApp.Models.Inventory>
+
+@{
+    ViewData["Title"] = "My Inventories";
+}
+
+<h1>My Inventories</h1>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Create New</a>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created At</th>
+                <th>Items</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var inv in Model)
+            {
+                <tr>
+                    <td><a asp-action="Details" asp-route-id="@inv.Id">@inv.Title</a></td>
+                    <td>@inv.Description</td>
+                    <td>@inv.CreatedAt.ToShortDateString()</td>
+                    <td>@inv.Items.Count</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>You have no inventories yet.</p>
+}

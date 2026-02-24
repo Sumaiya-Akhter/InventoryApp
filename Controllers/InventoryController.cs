@@ -145,4 +145,15 @@ public async Task<IActionResult> Search(string q)
 
     return View(results);
 }
+[Authorize]
+public async Task<IActionResult> MyInventories()
+{
+    var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    var inventories = await _db.Inventories
+        .Include(i => i.Creator)
+        .Where(i => i.CreatorId == userId)
+        .OrderByDescending(i => i.CreatedAt)
+        .ToListAsync();
+    return View(inventories);
+}
 }
