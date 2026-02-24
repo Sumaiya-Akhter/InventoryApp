@@ -28,8 +28,11 @@ public class HomeController : Controller
             .Take(5)
             .ToListAsync();
 
+        var tags = await _db.Tags.ToListAsync();
+
         ViewBag.Latest = latest;
         ViewBag.Popular = popular;
+        ViewBag.Tags = tags;
         return View();
     }
 

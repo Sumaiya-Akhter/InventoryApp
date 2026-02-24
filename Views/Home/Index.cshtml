@@ -47,3 +47,11 @@
         }
     </tbody>
 </table>
+<h2 class="mt-4">Tags</h2>
+<div>
+    @foreach (var tag in ViewBag.Tags as List<InventoryApp.Models.Tag>)
+    {
+        <a asp-controller="Inventory" asp-action="Search" asp-route-q="@tag.Name" 
+           class="badge bg-primary text-decoration-none me-1 fs-6">@tag.Name</a>
+    }
+</div>
