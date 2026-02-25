@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using InventoryApp.Models;
 
 namespace InventoryApp.Controllers;
@@ -47,6 +48,29 @@ public class AccountController : Controller
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
+    }
+    public IActionResult ExternalLogin(string provider)
+    {
+        var redirectUrl = Url.Action("ExternalLoginCallback", "Account");
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        return Challenge(properties, provider);
+    }
+
+    public async Task<IActionResult> ExternalLoginCallback()
+    {
+        var info = await _signInManager.GetExternalLoginInfoAsync();
+        if (info == null) return RedirectToAction("Login");
+
+        var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+        if (result.Succeeded)
+            return RedirectToAction("Index", "Home");
+
+        var email = info.Principal.FindFirstValue(System.Security.Claims.ClaimTypes.Email)!;
+        var user = new IdentityUser { UserName = email, Email = email };
+        await _userManager.CreateAsync(user);
+        await _userManager.AddLoginAsync(user, info);
+        await _signInManager.SignInAsync(user, false);
         return RedirectToAction("Index", "Home");
     }
 }
