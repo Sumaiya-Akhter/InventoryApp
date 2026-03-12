@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+var appPort = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{appPort}");
 
 builder.Services.AddAntiforgery(options => {
     options.Cookie.SameSite = SameSiteMode.Lax;
@@ -18,8 +18,8 @@ if (connectionString.StartsWith("postgresql://") || connectionString.StartsWith(
 {
     var uri = new Uri(connectionString);
     var userInfo = uri.UserInfo.Split(':');
-    var port = uri.Port > 0 ? uri.Port : 5432;
-    connectionString = $"Host={uri.Host};Port={port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
+    var dbPort = uri.Port > 0 ? uri.Port : 5432;
+    connectionString = $"Host={uri.Host};Port={dbPort};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
 }
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -61,7 +61,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Auto-migrate database on startup
 using (var scope = app.Services.CreateScope())
 {
     try
@@ -75,20 +74,15 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
-//app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapStaticAssets();
 
 app.MapControllerRoute(
