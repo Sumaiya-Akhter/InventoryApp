@@ -148,6 +148,39 @@ public async Task<IActionResult> DeleteInventory(int id)
     await _db.SaveChangesAsync();
     return RedirectToAction("Index");
 }
+
+[Authorize]
+public async Task<IActionResult> EditItem(int id)
+{
+    var item = await _db.Items.FindAsync(id);
+    if (item == null) return NotFound();
+    var inventory = await _db.Inventories.FindAsync(item.InventoryId);
+    if (inventory == null) return NotFound();
+    ViewBag.Inventory = inventory;
+    return View(item);
+}
+
+[Authorize]
+[HttpPost]
+public async Task<IActionResult> EditItem(Item item)
+{
+    var existing = await _db.Items.FindAsync(item.Id);
+    if (existing == null) return NotFound();
+
+    existing.String1 = item.String1;
+    existing.String2 = item.String2;
+    existing.String3 = item.String3;
+    existing.Int1 = item.Int1;
+    existing.Int2 = item.Int2;
+    existing.Int3 = item.Int3;
+    existing.Bool1 = item.Bool1;
+    existing.Bool2 = item.Bool2;
+    existing.Bool3 = item.Bool3;
+
+    await _db.SaveChangesAsync();
+    return RedirectToAction("Details", new { id = existing.InventoryId });
+}
+
 public async Task<IActionResult> Search(string q)
 {
     ViewBag.Query = q;

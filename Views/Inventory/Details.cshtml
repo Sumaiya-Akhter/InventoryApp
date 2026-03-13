@@ -61,9 +61,9 @@
         <tbody>
             @foreach (var item in Model.Items)
             {
-                <tr>
+                <tr style="cursor:pointer" onclick="window.location='/Inventory/EditItem/@item.Id'">
                     <td>
-                        <input type="checkbox" name="selectedIds" value="@item.Id" form="itemsForm" />
+                        <input type="checkbox" name="selectedIds" value="@item.Id" form="itemsForm" onclick="event.stopPropagation()" />
                     </td>
                     @if (Model.String1Name != null) { <td>@item.String1</td> }
                     @if (Model.String2Name != null) { <td>@item.String2</td> }
